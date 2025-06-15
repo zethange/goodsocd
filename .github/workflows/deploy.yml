@@ -6,6 +6,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  TELEGO_BOT_TOKEN: ${{ secrets.TELEGO_BOT_TOKEN }}
 
 jobs:
   build-and-push:
