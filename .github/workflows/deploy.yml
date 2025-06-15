@@ -72,4 +72,3 @@ jobs:
             podman system prune -f
 
             podman ps -a
-            podman logs goodsocd-bot --tail 20

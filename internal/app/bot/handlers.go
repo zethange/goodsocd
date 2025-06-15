@@ -3,13 +3,18 @@ package bot
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
+	"math/rand"
+	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/mymmrac/telego"
 	"github.com/mymmrac/telego/telegohandler"
 	"github.com/rb-go/plural-ru"
+
+	tu "github.com/mymmrac/telego/telegoutil"
 )
 
 type Handlers struct {
@@ -23,6 +28,7 @@ func NewHandlers(service *AppService) *Handlers {
 func (h *Handlers) Register(bh *telegohandler.BotHandler) {
 	bh.Handle(h.HandleCommand1600x720, telegohandler.CommandEqual("1600x720"))
 	bh.Handle(h.HandleCommand1600x720Top, telegohandler.CommandEqual("1600x720_top"))
+	bh.Handle(h.HandleCommandFurry, telegohandler.CommandEqual("furry"))
 }
 
 func (h *Handlers) HandleCommand1600x720(ctx *telegohandler.Context, update telego.Update) error {
@@ -86,6 +92,31 @@ func (h *Handlers) HandleCommand1600x720Top(ctx *telegohandler.Context, update t
 		ReplyParameters: &telego.ReplyParameters{MessageID: msg.MessageID},
 		ParseMode:       "HTML",
 	})
+
+	return nil
+}
+
+func (h *Handlers) HandleCommandFurry(ctx *telegohandler.Context, update telego.Update) error {
+	furryId := rand.Intn(3500) + 1
+	url := fmt.Sprintf("https://res.cloudinary.com/f1sk/cute/cute_%d.jpg", furryId)
+
+	go func() {
+		resp, _ := http.Get(url)
+		defer func() {
+			_ = resp.Body.Close()
+		}()
+
+		bytes, _ := io.ReadAll(resp.Body)
+
+		photo := tu.Photo(update.Message.Chat.ChatID(), tu.FileFromBytes(bytes, url))
+
+		ctx.Bot().DeleteMessage(context.Background(), &telego.DeleteMessageParams{
+			ChatID:    update.Message.Chat.ChatID(),
+			MessageID: update.Message.MessageID,
+		})
+
+		ctx.Bot().SendPhoto(context.Background(), photo)
+	}()
 
 	return nil
 }
