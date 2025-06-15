@@ -28,7 +28,7 @@ func NewHandlers(service *AppService) *Handlers {
 func (h *Handlers) Register(bh *telegohandler.BotHandler) {
 	bh.Handle(h.HandleCommand1600x720, telegohandler.CommandEqual("1600x720"))
 	bh.Handle(h.HandleCommand1600x720Top, telegohandler.CommandEqual("1600x720_top"))
-	bh.Handle(h.HandleCommandFurry, telegohandler.CommandEqual("furry_1984"))
+	// bh.Handle(h.HandleCommandFurry, telegohandler.CommandEqual("furry_1984"))
 }
 
 func (h *Handlers) HandleCommand1600x720(ctx *telegohandler.Context, update telego.Update) error {
