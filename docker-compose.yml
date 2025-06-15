@@ -1,6 +1,6 @@
 services:
   bot:
-    image: goodsocd:latest
+    image: ghcr.io/zethange/goodsocd:latest
     restart: unless-stopped
     volumes:
       - goodsocd_data:/data
