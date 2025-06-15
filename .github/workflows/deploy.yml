@@ -67,7 +67,7 @@ jobs:
 
             podman compose pull
 
-            TELEGO_BOT_TOKEN=$TELEGO_BOT_TOKEN podman-compose up -d --force-recreate
+            TELEGO_BOT_TOKEN=$TELEGO_BOT_TOKEN podman-compose up -d
 
             podman system prune -f
 
